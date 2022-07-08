@@ -1,7 +1,5 @@
 # The Ultimate NFT Repo
 
-*[⌨️ (20:28:51) Lesson 14: Hardhat NFTs ](https://www.youtube.com/watch?v=gyMwXuJrbJQ&t=73731s)*
-
 <br/>
 <p align="center">
 <img src="./images/randomNft/pug.png" width="225" alt="NFT Pug">
@@ -35,14 +33,6 @@ We go through creating 3 different kinds of NFTs.
     - `yarn --version` and get an output like: `x.x.x`
     - You might need to [install it with `npm`](https://classic.yarnpkg.com/lang/en/docs/install/) or `corepack`
 
-## Quickstart
-
-```
-git clone https://github.com/PatrickAlphaC/hardhat-nft-fcc
-cd hardhat-nft-fcc
-yarn
-```
-
 ## Typescript
 
 If you want to get to typescript and you cloned the javascript version, just run:
@@ -52,7 +42,7 @@ git checkout typescript
 ```
 
 
-# Useage
+# Usage
 
 Deploy:
 
