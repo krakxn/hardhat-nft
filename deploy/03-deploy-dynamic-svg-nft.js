@@ -10,7 +10,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     let ethUsdPriceFeedAddress
 
     if (chainId == 31337) {
-        // Find ETH/USD price feed
+        // Find ETH / USD price feed
         const EthUsdAggregator = await deployments.get("MockV3Aggregator")
         ethUsdPriceFeedAddress = EthUsdAggregator.address
     } else {
@@ -19,9 +19,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     const lowSVG = await fs.readFileSync("./images/dynamicNft/frown.svg", { encoding: "utf8" })
     const highSVG = await fs.readFileSync("./images/dynamicNft/happy.svg", { encoding: "utf8" })
+    const arguments = [ethUsdPriceFeedAddress, lowSVG, highSVG]
 
     log("----------------------------------------------------")
-    arguments = [ethUsdPriceFeedAddress, lowSVG, highSVG]
+    
     const dynamicSvgNft = await deploy("DynamicSvgNft", {
         from: deployer,
         args: arguments,
