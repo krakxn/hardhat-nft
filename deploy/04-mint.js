@@ -22,13 +22,16 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const mintFee = await randomIpfsNft.getMintFee()
     const randomIpfsNftMintTx = await randomIpfsNft.requestNft({ value: mintFee.toString() })
     const randomIpfsNftMintTxReceipt = await randomIpfsNftMintTx.wait(1)
+    
     // Need to listen for response
     await new Promise(async (resolve) => {
-        setTimeout(resolve, 300000) // 5 minute timeout time
-        // setup listener for our event
+        setTimeout(resolve, 300000) // Timeout time 5 minutes 
+        
+        // Setup listener for our event
         randomIpfsNft.once("NftMinted", async () => {
             resolve()
         })
+        
         if (chainId == 31337) {
             const requestId = randomIpfsNftMintTxReceipt.events[1].args.requestId.toString()
             const vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock", deployer)
