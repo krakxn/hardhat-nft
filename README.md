@@ -1,4 +1,4 @@
-# The Ultimate NFT Repo
+# NFTs (Basic, IPFS, SVG) - Hardhat:
 
 <br/>
 <p align="center">
@@ -13,9 +13,9 @@
 We go through creating 3 different kinds of NFTs.
 
 1. A Basic NFT
-2. IPFS Hosted NFT 
-   1. That uses Randomness to generate a unique NFT
-3. SVG NFT (Hosted 100% on-chain) 
+2. A IPFS-Hosted NFT 
+   1. That uses randomness to generate a unique NFT
+3. A SVG NFT (Hosted 100% on-chain) 
    1. Uses price feeds to be dynamic
 
 
@@ -25,17 +25,17 @@ We go through creating 3 different kinds of NFTs.
 
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   - You'll know you did it right if you can run `git --version` and you see a response like `git version x.x.x`
-- [Nodejs](https://nodejs.org/en/)
-  - You'll know you've installed nodejs right if you can run:
+- [Node.js](https://nodejs.org/en/)
+  - You'll know you've installed Node.js right if you can run:
     - `node --version` and get an ouput like: `vx.x.x`
 - [Yarn](https://yarnpkg.com/getting-started/install) instead of `npm`
   - You'll know you've installed yarn right if you can run:
     - `yarn --version` and get an output like: `x.x.x`
     - You might need to [install it with `npm`](https://classic.yarnpkg.com/lang/en/docs/install/) or `corepack`
 
-## Typescript
+## TypeScript
 
-If you want to get to typescript and you cloned the javascript version, just run:
+If you want to get to TypeScript and you cloned the JavaScript version, just run:
 
 ```
 git checkout typescript
@@ -70,13 +70,13 @@ yarn hardhat coverage
 
 You'll want to set your `RINKEBY_RPC_URL` and `PRIVATE_KEY` as environment variables. You can add them to a `.env` file, similar to what you see in `.env.example`.
 
-- `PRIVATE_KEY`: The private key of your account (like from [metamask](https://metamask.io/)). **NOTE:** FOR DEVELOPMENT, PLEASE USE A KEY THAT DOESN'T HAVE ANY REAL FUNDS ASSOCIATED WITH IT.
+- `PRIVATE_KEY`: The private key of your account (like from [MetaMask](https://metamask.io/)). **NOTE:** FOR DEVELOPMENT, PLEASE USE A KEY THAT DOESN'T HAVE ANY REAL FUNDS ASSOCIATED WITH IT.
   - You can [learn how to export it here](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key).
 - `RINKEBY_RPC_URL`: This is url of the rinkeby testnet node you're working with. You can get setup with one for free from [Alchemy](https://alchemy.com/?a=673c802981)
 
 2. Get testnet ETH
 
-Head over to [faucets.chain.link](https://faucets.chain.link/) and get some tesnet ETH & LINK. You should see the ETH and LINK show up in your metamask. [You can read more on setting up your wallet with LINK.](https://docs.chain.link/docs/deploy-your-first-contract/#install-and-fund-your-metamask-wallet)
+Head over to [Chainlink faucets](https://faucets.chain.link/) and get some testnet ETH & LINK. You should see the ETH and LINK show up in your MetaMask. [You can read more on setting up your wallet with LINK.](https://docs.chain.link/docs/deploy-your-first-contract/#install-and-fund-your-metamask-wallet)
 
 3. Setup a Chainlink VRF Subscription ID
 
@@ -119,11 +119,11 @@ Then, uncomment the line `coinmarketcap: COINMARKETCAP_API_KEY,` in `hardhat.con
 
 
 
-## Verify on etherscan
+## Verify on Etherscan
 
 If you deploy to a testnet or mainnet, you can verify it if you get an [API Key](https://etherscan.io/myapikey) from Etherscan and set it as an environemnt variable named `ETHERSCAN_API_KEY`. You can pop it into your `.env` file as seen in the `.env.example`.
 
-In it's current state, if you have your api key set, it will auto verify kovan contracts!
+In its current state, if you have your API key set, it will auto verify Kovan contracts!
 
 However, you can manual verify with:
 
@@ -131,9 +131,9 @@ However, you can manual verify with:
 yarn hardhat verify --constructor-args arguments.ts DEPLOYED_CONTRACT_ADDRESS
 ```
 
-### Typescript differences
+### TypeScript differences
 1. `.js` files are now `.ts`
-2. We added a bunch of typescript and typing packages to our `package.json`. They can be installed with:
+2. I added a bunch of TypeScript and typing packages to my `package.json`. They can be installed with:
    1. `yarn add @typechain/ethers-v5 @typechain/hardhat @types/chai @types/node ts-node typechain typescript`
 3. The biggest one being [typechain](https://github.com/dethcrypto/TypeChain)
    1. This gives your contracts static typing, meaning you'll always know exactly what functions a contract can call. 
