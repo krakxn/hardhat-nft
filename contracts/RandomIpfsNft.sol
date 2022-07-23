@@ -12,14 +12,14 @@ error NeedMoreETHSent();
 error RangeOutOfBounds();
 
 contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
-    // Types
+    /// Types
     enum Breed {
         PUG,
         SHIBA_INU,
         ST_BERNARD
     }
 
-    // Chainlink VRF Variables
+    /// Chainlink VRF Variables
     VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
     uint64 private immutable i_subscriptionId;
     bytes32 private immutable i_gasLane;
@@ -27,7 +27,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
     uint32 private constant NUM_WORDS = 1;
 
-    // NFT Variables
+    /// NFT Variables
     uint256 private i_mintFee;
     uint256 public s_tokenCounter;
     mapping(uint256 => Breed) private s_tokenIdToBreed;
@@ -35,17 +35,17 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     string[] internal s_dogTokenUris;
     bool private s_initialized;
 
-    // VRF Helpers
+    /// VRF Helpers
     mapping(uint256 => address) public s_requestIdToSender;
 
-    // Events
+    /// Events
     event NftRequested(uint256 indexed requestId, address requester);
     event NftMinted(Breed breed, address minter);
 
     constructor(
         address vrfCoordinatorV2,
         uint64 subscriptionId,
-        bytes32 gasLane, // keyHash
+        bytes32 gasLane, /// keyHash
         uint256 mintFee,
         uint32 callbackGasLimit,
         string[3] memory dogTokenUris
@@ -62,6 +62,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         if (msg.value < i_mintFee) {
             revert NeedMoreETHSent();
         }
+        
         requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
@@ -93,6 +94,7 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         if (s_initialized) {
             revert AlreadyInitialized();
         }
+        
         s_dogTokenUris = dogTokenUris;
         s_initialized = true;
     }
@@ -100,13 +102,17 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     function getBreedFromModdedRng(uint256 moddedRng) public pure returns (Breed) {
         uint256 cumulativeSum = 0;
         uint256[3] memory chanceArray = getChanceArray();
+        
         for (uint256 i = 0; i < chanceArray.length; i++) {
-            // if (moddedRng >= cumulativeSum && moddedRng < cumulativeSum + chanceArray[i]) {
             if (moddedRng >= cumulativeSum && moddedRng < chanceArray[i]) {
                 return Breed(i);
-            }
-            // cumulativeSum = cumulativeSum + chanceArray[i];
+            } 
+            /// Alternative:
+            /// if (moddedRng >= cumulativeSum && moddedRng < cumulativeSum + chanceArray[i]) {
+            
             cumulativeSum = chanceArray[i];
+            /// Alternative:
+            /// cumulativeSum = cumulativeSum + chanceArray[i];
         }
         revert RangeOutOfBounds();
     }
@@ -116,7 +122,8 @@ contract RandomIpfsNft is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Transfer failed");
     }
-
+    
+    /// Getter functions:
     function getMintFee() public view returns (uint256) {
         return i_mintFee;
     }
