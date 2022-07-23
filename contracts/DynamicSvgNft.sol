@@ -11,9 +11,10 @@ contract DynamicSvgNft is ERC721, Ownable {
     uint256 private s_tokenCounter;
     string private s_lowImageURI;
     string private s_highImageURI;
+    AggregatorV3Interface internal immutable i_priceFeed;
 
     mapping(uint256 => int256) private s_tokenIdToHighValues;
-    AggregatorV3Interface internal immutable i_priceFeed;
+    
     event CreatedNFT(uint256 indexed tokenId, int256 highValue);
 
     constructor(
@@ -23,29 +24,29 @@ contract DynamicSvgNft is ERC721, Ownable {
     ) ERC721("Dynamic SVG NFT", "DSN") {
         s_tokenCounter = 0;
         i_priceFeed = AggregatorV3Interface(priceFeedAddress);
-        // setLowSVG(lowSvg);
-        // setHighSVG(highSvg);
+        /// setLowSVG(lowSvg);
+        /// setHighSVG(highSvg);
         s_lowImageURI = svgToImageURI(lowSvg);
         s_highImageURI = svgToImageURI(highSvg);
     }
 
-    // function setLowURI(string memory svgLowURI) public onlyOwner {
-    //     s_lowImageURI = svgLowURI;
+    /// function setLowURI(string memory svgLowURI) public onlyOwner {
+    ///     s_lowImageURI = svgLowURI;
+    /// }
+
+    /// function setHighURI(string memory svgHighURI) public onlyOwner {
+    ///     s_highImageURI = svgHighURI;
     // }
 
-    // function setHighURI(string memory svgHighURI) public onlyOwner {
-    //     s_highImageURI = svgHighURI;
-    // }
+    /// function setLowSVG(string memory svgLowRaw) public onlyOwner {
+    ///     string memory svgURI = svgToImageURI(svgLowRaw);
+    ///     setLowURI(svgURI);
+    /// }
 
-    // function setLowSVG(string memory svgLowRaw) public onlyOwner {
-    //     string memory svgURI = svgToImageURI(svgLowRaw);
-    //     setLowURI(svgURI);
-    // }
-
-    // function setHighSVG(string memory svgHighRaw) public onlyOwner {
-    //     string memory svgURI = svgToImageURI(svgHighRaw);
-    //     setHighURI(svgURI);
-    // }
+    /// function setHighSVG(string memory svgHighRaw) public onlyOwner {
+    ///     string memory svgURI = svgToImageURI(svgHighRaw);
+    ///     setHighURI(svgURI);
+    /// }
 
     function mintNft(int256 highValue) public {
         s_tokenIdToHighValues[s_tokenCounter] = highValue;
@@ -54,11 +55,11 @@ contract DynamicSvgNft is ERC721, Ownable {
         s_tokenCounter = s_tokenCounter + 1;
     }
 
-    // You could also just upload the raw SVG and have solildity convert it!
+    /// You could also just upload the raw SVG and have Solidity convert it!
     function svgToImageURI(string memory svg) public pure returns (string memory) {
-        // example:
-        // '<svg width="500" height="500" viewBox="0 0 285 350" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="black" d="M150,0,L75,200,L225,200,Z"></path></svg>'
-        // would return ""
+        /// example:
+        /// '<svg width="500" height="500" viewBox="0 0 285 350" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="black" d="M150,0,L75,200,L225,200,Z"></path></svg>'
+        /// would return ""
         string memory baseURL = "data:image/svg+xml;base64,";
         string memory svgBase64Encoded = Base64.encode(bytes(string(abi.encodePacked(svg))));
         return string(abi.encodePacked(baseURL, svgBase64Encoded));
@@ -72,9 +73,11 @@ contract DynamicSvgNft is ERC721, Ownable {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
         (, int256 price, , , ) = i_priceFeed.latestRoundData();
         string memory imageURI = s_lowImageURI;
+        
         if (price >= s_tokenIdToHighValues[tokenId]) {
             imageURI = s_highImageURI;
         }
+        
         return
             string(
                 abi.encodePacked(
@@ -94,7 +97,8 @@ contract DynamicSvgNft is ERC721, Ownable {
                 )
             );
     }
-
+    
+    // Getter functions:
     function getLowSVG() public view returns (string memory) {
         return s_lowImageURI;
     }
